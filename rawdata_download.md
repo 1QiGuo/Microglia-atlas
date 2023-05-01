@@ -33,7 +33,7 @@ export PATH=$PATH:$PWD/sratoolkit.3.0.0-mac64/bin
 #check path
 echo $PATH
 ```
-Alternatively, we just moved nextflow package to our home path, which has been added to my PATH environment variable.
+Alternatively, we moved nextflow binary file to **/.conda/envs/rawdatadownload/bin/** directly.
 
 ## Install singularity on OSC
 Singularity is an open source container platform designed to be simple, fast, and secure.
