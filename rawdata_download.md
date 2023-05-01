@@ -53,7 +53,15 @@ conda install nf-core
 
 ## Configuretion
 To let nextflow knows how to fetch the required software.
-how to configure, using conda or singularity?
+?using conda or singularity?
+```
+nf-core download fetchngs 1.9
+```
+If you are using singularity, please use the nf-core download command to download images first, before running the pipeline. Setting the NXF_SINGULARITY_CACHEDIR or singularity.cacheDir Nextflow options enables you to store and re-use the images from a central location for future pipeline runs.
+
+$NXF_SINGULARITY_CACHEDIR and images have been added to `/users/PAS1475/guoqi/.bashrc`.
+![image](https://user-images.githubusercontent.com/96271990/235548782-e9b48417-3dad-4c31-a143-f95e69e28d33.png)
+
 
 ## Download the pipeline and test it on a minimal dataset with a single command
 ```
