@@ -12,7 +12,11 @@ cd /fs/ess/PAS1475/guoqi/nf_core
 
 ### Install Nextflow on OSC
 
+Nextflow enables scalable and reproducible scientific workflows using software containers.
+
 ```
+#change java version on OSC to download nextflow
+module load java/12.0.2
 #download the executable package 
 #(what is the bash mean?)
 wget -qO- https://get.nextflow.io | bash
