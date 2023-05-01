@@ -22,6 +22,14 @@ chmod +x nextflow
 #$PATH variable (this is only required to avoid remembering and typing the 
 #full path to nextflow each time you need to run it).
 ```
+### Set the path of Nextflow to your your PATH environment variable.
+
+```
+export PATH=$PATH:$PWD/sratoolkit.3.0.0-mac64/bin
+#check path
+echo $PATH
+```
+Alternatively, we just moved nextflow package to our home path, which has been added to my PATH environment variable.
 
 ## Install singularity on OSC
 Singularity is an open source container platform designed to be simple, fast, and secure.
@@ -31,4 +39,20 @@ OSC has singularity so we don't need to install it.
 ingularity --version
 #output(how to show the output?)
 apptainer version 1.1.6
+```
+
+## Install nf-core using conda
+
+```
+conda install nf-core
+```
+
+## Configuretion
+To let nextflow knows how to fetch the required software.
+how to configure, using conda or singularity?
+
+## Download the pipeline and test it on a minimal dataset with a single command
+```
+#what is yourprofile?
+nextflow run nf-core/fetchngs -profile test,YOURPROFILE --outdir <OUTDIR>
 ```
