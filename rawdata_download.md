@@ -40,7 +40,7 @@ Singularity is an open source container platform designed to be simple, fast, an
 OSC can not use docker and singularity is an alternative to docker and do not need permission (sudo).
 OSC has singularity so we don't need to install it.
 ```
-ingularity --version
+singularity --version
 #output(how to show the output?)
 apptainer version 1.1.6
 ```
@@ -73,3 +73,13 @@ nextflow run nf-core/fetchngs -profile test,singularity --outdir ./out
 You finished the configuration for nf-core! Now, let's start to use on our own data!
 
 ## Start to run on Faith's data.
+```
+nextflow run nf-core/fetchngs --input SRR_Acc_List_faith.csv --outdir ./fetch_faith
+```
+## Bug
+1. vim nextflow.config delete description
+2. vim sra_ids_to_runinfo.py delete 1) accession 2) parent_study 3)description
+
+
+
+```
