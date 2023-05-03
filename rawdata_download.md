@@ -75,11 +75,21 @@ You finished the configuration for nf-core! Now, let's start to use on our own d
 ## Start to run on Faith's data.
 ```
 nextflow run nf-core/fetchngs --input SRR_Acc_List_faith.csv --outdir ./fetch_faith
+#update
+nextflow run /fs/ess/PAS1475/guoqi/fetch/fetchngs --input ./SRR_Acc_List_faith.csv --outdir ./fetch_faith2 -profile singularity
 ```
 ## Bug
 1. vim nextflow.config delete description
 2. vim sra_ids_to_runinfo.py delete 1) accession 2) parent_study 3)description
 
 
+# QC
+
+## 10X
+```
+nextflow run /fs/ess/PAS1475/guoqi/nf_core/scrnaseq_qc/scrnaseq --input pre_summary.cs
+v --outdir ./cellranger --fasta /fs/ess/PAS1475/guoqi/sci_atlas/raw_data/faith/fetch_faith2/fastq/SRX14206680_SRR18054649_1.fastq.g
+z --genome GRCh38 --gtf gencode.vM19.annotation.chr19.gtf --protocol 10XV2 --aligner cellranger -profile singularity
+```
 
 ```
