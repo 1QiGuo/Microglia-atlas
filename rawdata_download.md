@@ -51,7 +51,18 @@ apptainer version 1.1.6
 conda install nf-core
 ```
 
-## Configuretion (optional)
+## Install pipeline
+
+code will be automatically downloaded to your directory
+```
+cd directory
+git clone https://github.com/nf-core/scrnaseq.git
+```
+
+## Configuration (optional)
+
+Another way is to download using provided download code.
+
 To let nextflow knows how to fetch the required software.
 ```
 nf-core download fetchngs 1.9
