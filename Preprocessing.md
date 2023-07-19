@@ -33,3 +33,23 @@ for f in S*; do echo $f; done
 #
 for f in SRX*; do srr_name="${f#*_}" srr_name="${srr_name%%_*}" new_name=; done
 ```
+
+3. Pull image by updated code from nfcore
+   
+```
+#a. delete scrnaseq pipeline
+#b. reinstall scrnaseq pipeline
+git clone https://github.com/nf-core/scrnaseq.git
+cd scrnaseq/
+git checkout 0e5fc8b
+git branch
+git check
+```
+
+
+4. Delete the if sentances in the cellranger part
+
+```
+  cd /fs/ess/PAS1475/guoqi/nf_core/scrnaseq/modules/nf-core/cellranger/count/templates
+```
+![image](https://github.com/1QiGuo/Microglia-atlas/assets/96271990/14049c74-7d0d-4292-a454-aa2a53ac5d68)
