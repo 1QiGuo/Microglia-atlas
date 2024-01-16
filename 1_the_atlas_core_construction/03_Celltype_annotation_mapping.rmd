@@ -1,0 +1,168 @@
+# Creating an harmonized cell types and mapping original annotation to this
+
+## Import data
+
+```{r include=FALSE}
+health_merge_1115_qc_intersect<-qread("/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_merge_qc_1115_intersectgene.qs")
+health_merge_1115_qc_intersect$harmonized_majorct<-health_merge_1115_qc_intersect$previous_celltype
+health_list_1115_qc_intersect<-SplitObject(health_merge_1115_qc_intersect,split.by = "Study_name")
+```
+
+## Popovich_2022
+
+```{r include=FALSE}
+health_list_1115_qc_intersect[[1]]$harmonized_majorct[which(health_list_1115_qc_intersect[[1]]$previous_celltype=="B cells")]="Lymphocytes"
+health_list_1115_qc_intersect[[1]]$harmonized_majorct[which(health_list_1115_qc_intersect[[1]]$previous_celltype=="T cells")]="Lymphocytes"
+health_list_1115_qc_intersect[[1]]$harmonized_majorct[which(health_list_1115_qc_intersect[[1]]$previous_celltype=="Monocytes")]="Myeloid cells"
+health_list_1115_qc_intersect[[1]]$harmonized_majorct[which(health_list_1115_qc_intersect[[1]]$previous_celltype=="MDMs")]="Myeloid cells"
+health_list_1115_qc_intersect[[1]]$harmonized_majorct[which(health_list_1115_qc_intersect[[1]]$previous_celltype=="Neutrophils")]="Myeloid cells"
+#remove Intermediate progenitors
+Intemediate<-colnames(health_list_1115_qc_intersect[[1]])[which(health_list_1115_qc_intersect[[1]]$previous_celltype=="Intermediate progenitors")]
+health_list_1115_qc_intersect[[1]] <- subset(health_list_1115_qc_intersect[[1]], cells = Intemediate,invert = TRUE)
+```
+
+## Levine_2022
+
+```{r include=FALSE}
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_celltype=="Endothelial")]="Endothelial cells"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_celltype=="Ependymal")]="Ependymal cells"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_celltype=="Leptomeninges")]="Leptomeningeal cells"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="Activated Microglia A")]="Microglia"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="Activated Microglia B")]="Microglia"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="Microglia 1")]="Microglia"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="Microglia 2")]="Microglia"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="Microglia 3")]="Microglia"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="Macrophages")]="Myeloid cells"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_subcelltype=="NK/Tcells")]="Lymphocytes"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_celltype=="Oligodendrocyte Progenitors/Precursors")]="Oligodendrocyte lineage"
+health_list_1115_qc_intersect[[2]]$harmonized_majorct[which(health_list_1115_qc_intersect[[2]]$previous_celltype=="Oligodendrocytes")]="Oligodendrocyte lineage"
+#remove schwann
+Schwann<-colnames(health_list_1115_qc_intersect[[2]])[which(health_list_1115_qc_intersect[[2]]$previous_celltype=="Schwann")]
+health_list_1115_qc_intersect[[2]] <- subset(health_list_1115_qc_intersect[[2]], cells = Schwann,invert = TRUE)
+```
+
+## Cheng_2022
+
+need to annotate leukocyte to myeloid cells and lymphocytes further next round.
+
+```{r include=FALSE}
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Astrocyte")]="Astrocytes"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Erythocyte")]="Erythroid cells"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Neuron")]="Neurons"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Neutrophil")]="Myeloid cells"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Endothelial")]="Endothelial cells"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Ependyma")]="Ependymal cells"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Leptomeninges")]="Leptomeningeal cells"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="ODC")]="Oligodendrocyte lineage"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="OPC")]="Oligodendrocyte lineage"
+health_list_1115_qc_intersect[[4]]$harmonized_majorct[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Pericyte")]="Pericytes"
+Stromal<-colnames(health_list_1115_qc_intersect[[4]])[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="Stromal")]
+health_list_1115_qc_intersect[[4]] <- subset(health_list_1115_qc_intersect[[4]], cells = Stromal,invert = TRUE)
+#remove leukecyte currently (might need to annotate further by ourselves)
+leukecyte<-colnames(health_list_1115_qc_intersect[[4]])[which(health_list_1115_qc_intersect[[4]]$previous_celltype=="leukecyte")]
+health_list_1115_qc_intersect[[4]] <- subset(health_list_1115_qc_intersect[[4]], cells = leukecyte,invert = TRUE)
+```
+
+## Lee_2021
+
+```{r include=FALSE}
+Lee_2021<-merge(health_list_1115_qc_intersect[[6]],health_list_1115_qc_intersect[[7]])
+health_list_1115_qc_intersect<-health_list_1115_qc_intersect[-c(6,7)]
+health_list_1115_qc_intersect<-c(health_list_1115_qc_intersect,Lee_2021)
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Astrocyte")]="Astrocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Dendritic")]="Leukocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Div-Myeloid")]="Leukocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Endothelial")]="Endothelial cells"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Endothelial")]="Endothelial cells"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Ependymal")]="Ependymal cells"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Lymphocyte")]="Lymphocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Macrophage")]="Lymphocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Monocyte")]="Lymphocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Neuron")]="Neurons"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Neutrophil")]="Lymphocytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Pericyte")]="Pericytes"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Oligodendrocyte")]="Oligodendrocyte lineage"
+health_list_1115_qc_intersect[[10]]$harmonized_majorct[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="OPC")]="Oligodendrocyte lineage"
+Fibro<-colnames(health_list_1115_qc_intersect[[10]])[which(health_list_1115_qc_intersect[[10]]$previous_celltype=="Fibroblast")]
+health_list_1115_qc_intersect[[10]] <- subset(health_list_1115_qc_intersect[[10]], cells = Fibro,invert = TRUE)
+table(health_list_1115_qc_intersect[[10]]$harmonized_majorct)
+```
+
+## Zhu_2021
+
+```{r include=FALSE}
+#we have a new metadata column named harmonized_majorct2 because we wanted to distinguish with leukocytes. but we don't need it right now.
+health_merge_1115_qc_intersect$harmonized_majorct2<-health_merge_1115_qc_intersect$harmonized_majorct
+health_list_1115_qc_intersect<-SplitObject(health_merge_1115_qc_intersect,split.by = "purestudy_name")
+#remove fibroblast
+Fibro<-colnames(health_list_1115_qc_intersect[[9]])[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Monocyte-derived fibroblast")]
+health_list_1115_qc_intersect[[9]] <- subset(health_list_1115_qc_intersect[[9]], cells = Fibro,invert = TRUE)
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="B cells")]="Lymphocytes"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Dendritic cells")]="Myeloid cells"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Macrophage")]="Myeloid cells"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Mast cell")]="Myeloid cells"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Monocytes")]="Myeloid cells"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Monocytes-derived macrophage")]="Myeloid cells"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Neutrophil")]="Myeloid cells"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="NK cells")]="Lymphocytes"
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="T cells")]="Lymphocytes"
+table(health_list_1115_qc_intersect[[9]]$harmonized_majorct2)
+health_list_1115_qc_intersect[[9]]$harmonized_majorct2[which(health_list_1115_qc_intersect[[9]]$previous_celltype=="Undefined")]="Unknown"
+```
+
+# Merge
+
+need to figure out where is the na from
+
+```{r include=FALSE}
+qsave(health_list_1115_qc_intersect,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_list_qc_1115_intersectgene_mapct.qs")#this can be used for integration
+#----merge
+health_merge_1115_qc_intersect <- Merge_Seurat_List(
+  health_list_1115_qc_intersect,
+  add.cell.ids = NULL,
+  merge.data = TRUE
+)
+qsave(health_merge_1115_qc_intersect,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_merge_qc_1115_intersectgene_mapct.qs")#this can be used for integration
+health_merge_1115_qc_intersect<-qread("/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_merge_qc_1115_intersectgene_mapct.qs")#this can be used for integration
+
+#add na (need to figure out where is the na from)
+Idents(health_merge_1115_qc_intersect)<-health_merge_1115_qc_intersect$Study_name
+health_merge_1115_qc_intersect$previous_celltype[which(is.na(health_merge_1115_qc_intersect$previous_celltype))]<-"Unknown"
+health_merge_1115_qc_intersect$harmonized_majorct[which(is.na(health_merge_1115_qc_intersect$harmonized_majorct))]<-"Unknown"
+```
+
+# Barplot
+
+need to keep the same color for the umap
+
+```{r include=FALSE}
+health_merge_1117_qc_intersect$harmonized_majorct2<-factor(health_merge_1117_qc_intersect$harmonized_majorct2,levels = sort(unique(health_merge_1117_qc_intersect$harmonized_majorct2),decreasing = F))
+study_name<-sort(unique(health_merge_1117_qc_intersect$purestudy_name),decreasing = F)
+health_merge_1117_qc_intersect$purestudy_name<-factor(health_merge_1117_qc_intersect$purestudy_name,levels = study_name[c(1,2,4,6,7,10,3,5,8,9)])
+
+cell.prop<-as.data.frame(prop.table(table(health_merge_1117_qc_intersect$harmonized_majorct2, health_merge_1117_qc_intersect$purestudy_name),2))
+colnames(cell.prop)<-c("cluster","Study","Proportion")
+library("ggplot2")
+p<-ggplot(cell.prop,aes(Study,Proportion,fill=cluster))+
+  geom_bar(stat="identity",position="fill")+
+  ggtitle("")+
+  theme_bw()+
+  theme(axis.ticks.length=unit(0.1,'cm'),axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+        text = element_text(size=25),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line())+
+  guides(fill=guide_legend(title=NULL))
+#change plot color
+library("ggsci")
+paired<-pal_npg("nrc", alpha = 1)(10)
+my_cols<-c(paired,"#3C5488B2","#666666")#,
+p=p+scale_fill_manual(values=my_cols)
+ggsave(
+  filename = paste0("/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Merge_health/Celltype_pro_barplot_1117_myeloid_sep",".tiff"),
+  plot = p,
+  device = "tiff",
+  width = 10,
+  height = 10,
+  units = "in",
+  dpi = 150
+)
+```
