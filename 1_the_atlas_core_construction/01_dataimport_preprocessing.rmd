@@ -1,8 +1,60 @@
+
+# load library
+
+```{r setup, include=FALSE}
 library(qs)
 library("readxl")
 library(Seurat)
 library("scCustomize")
 library(patchwork)
 library(dplyr)
+```
 
+# Preprocessing
+```{r setup, include=FALSE}
+##############Popovich_2022################
+datasetid<-c("SCI00101","SCI00102","SCI00103","SCI00104","SCI00105","SCI00106")
+Popovich_2022_dirs <-list.files(".",pattern = "GSM")
+Popovich_2022_list <- list()
+for (i in seq_along(Popovich_2022_dirs)){
+  tmp <- Read10X(
+    Popovich_2022_dirs[i],
+    unique.features = TRUE,
+    strip.suffix = FALSE
+  )
+  Popovich_2022_list[i] <- CreateSeuratObject(
+    tmp,
+    assay = "RNA",
+    min.cells = 3,
+    min.features = 200,
+    project = datasetid[i]
+  )
+}
+#add major cell and microglia annotation
+#previous cell annotation
+setwd("/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_object/Popovich_lab/Single_cell_Faith")
+combine.combined<-qread("faith_final_data.qs")
+meta<-combine.combined@meta.data
+microglia<-qread("./Faith_original_files/this_micro_obj.qs")
+microglia_meta<-microglia@meta.data
+rownames(microglia_meta)<-sapply(rownames(microglia_meta), function(x) strsplit(x, split = "-") %>% `[[` (1)%>% head(n = 1))
+condition<-unique(meta$orig.ident)
+for(i in 1:6){
+  tmp<-Popovich_2022_list[[i]]
+  first_characters_cellnames<-sapply(colnames(tmp), function(x) strsplit(x, split = "-") %>% `[[` (1)%>% head(n = 1))
+  #revise cell name by the way
+  tmp<-RenameCells(tmp,new.names  = first_characters_cellnames)
+  tmp<-AddMetaData(tmp,paste(condition[i],first_characters_cellnames,sep="_"), col.name = "previous_cellid")
+  tmp<-AddMetaData(tmp,meta$celltype[match(tmp$previous_cellid,rownames(meta))],col.name = "previous_celltype")
+  tmp$previous_subcelltype<-microglia_meta$subct[match(tmp$previous_cellid,rownames(microglia_meta))]
+  Popovich_2022_list[[i]]<-tmp
+}
 
+#change cell id
+Popovich_2022_list<-lapply(Popovich_2022_list,function(x){RenameCells(x,add.cell.id = x$orig.ident[1])})
+
+#check cell number
+ncol(Popovich_2022_list[[1]])+ncol(Popovich_2022_list[[2]])+ncol(Popovich_2022_list[[3]])+ncol(Popovich_2022_list[[4]])+ncol(Popovich_2022_list[[5]])+ncol(Popovich_2022_list[[6]])
+qsave(Popovich_2022_list,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_object/Popovich_lab/Single_cell_Faith/Popovich_2022_list.qs")
+
+```
