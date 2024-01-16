@@ -62,7 +62,7 @@ Popovich_2022_list<-lapply(Popovich_2022_list,function(x){RenameCells(x,add.cell
 ncol(Popovich_2022_list[[1]])+ncol(Popovich_2022_list[[2]])+ncol(Popovich_2022_list[[3]])+ncol(Popovich_2022_list[[4]])+ncol(Popovich_2022_list[[5]])+ncol(Popovich_2022_list[[6]])
 qsave(Popovich_2022_list,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_object/Popovich_lab/Single_cell_Faith/Popovich_2022_list.qs")
 
-## Mito genes are not detected in the datasets and it seems mit genes might have been removed by original authors because of 
+## QC: Mito genes are not detected in the datasets and it seems mit genes might have been removed by original authors because of 
 ##technical influences.
 
 # conclusion: the sham vehicle has 14849 features across 1795 cells.
@@ -107,8 +107,7 @@ Lee_2021_list<-lapply(Lee_2021_list,function(x){RenameCells(x,add.cell.id = x$or
 
 qsave(Lee_2021_list,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_object/Lee_lab/Lee_2021_list.qs")
 
-## Mito genes are not detected in the datasets and it seems mit genes might have been removed by original authors because of 
-##technical influences.
+## QC: don't need to filter cells because it has been filtered and have metadata. More strict can be considered.
 
 # conclusion: we can directly use the first three samples as naive core.
 ```
