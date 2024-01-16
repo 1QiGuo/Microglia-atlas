@@ -1,7 +1,56 @@
 # Criteria
 
+## Cells
 The quality of cells was then assessed based on two metrics: 
-(1) The number of detected genes per cell; 
-(2) The proportion of mitochondrial gene counts per cell. 
-Specifically, cells with detected genes fewer than 200 and mitochondrial unique molecular identifier (UMI) count percentage larger than 10% were filtered out. 
-The genes detected in more than 3 cells were retained. 
+(1) Cells with detected genes fewer than 200 were filtered out in the function "CreateSeuratObject". (The number of detected genes per cell;)
+(2) Cells that have less than 20% proportion of mitochondrial genes were filtered out. Some studies do not have mitochondrial genes. It seems mitochondrial genes might have been removed by the original authors because of technical influences.
+(3) To remove the potential doublets for datasets that do not have annotation (need to QC by ourselves), we will use DoubletFinder-R based (DoubletDetection or Scrublet(python)). Waiting the metadata first.
+
+```{r include=FALSE}
+# data import
+health_list_1115<-qread("/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_list_1115.qs")
+
+#check mit
+health_list_1115_qc<-list()
+for(i in 1:length(health_list_1115)){
+  print(grep ("^mt-", rownames(health_list_1115[[i]][["RNA"]]),value = T))
+#some of them have, so we do QC separately
+for(i in 1:length(health_list_1115)){
+  Idents(health_list_1115[[i]])<-health_list_1115[[i]]$Species
+  health_list_1115[[i]][["percent.mt"]] <-PercentageFeatureSet(health_list_1115[[i]], pattern = "^mt.")
+  health_list_1115_qc[[i]]<-subset(  health_list_1115[[i]], subset = nFeature_RNA > 200 & percent.mt < 20)
+}
+```
+
+## Genes
+1. The genes detected in more than 3 cells were retained. (This is done in the function "CreateSeuratObject")
+2. Intersect genes among all datasets have been used to avoid inconsistent gene names issues.
+
+```{r Genes, include=FALSE}
+# intersect gene names
+## Get intersect gene names
+gene_list_genesymbol<-list()
+for(i in 1:length(health_list_1115)){
+  gene_hugo<-rownames(health_list_1115[[i]])
+  gene_list_genesymbol[[i]]<-gene_hugo
+}
+## subset matrix with intersect gene names
+intersect_genesymbol<-Reduce(intersect, gene_list_genesymbol)#10174
+health_list_1115_qc_intersect<-list()
+for(i in 1:length(health_list_1115_qc)){
+  #subset based on the intersect gene list
+  health_list_1115_qc_intersect[[i]]<-subset(health_list_1115_qc[[i]],features =intersect_genesymbol)
+}
+```
+
+# Merge after QC
+
+```{r include=FALSE}
+#merge into one for QC
+health_merge_1115_qc_intersect <- Merge_Seurat_List(
+  health_list_1115_qc_intersect,
+  add.cell.ids = NULL,
+  merge.data = TRUE
+)
+qsave(health_merge_1115_qc_intersect,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_merge_qc_1115_intersectgene.qs")
+```
