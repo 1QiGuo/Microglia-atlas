@@ -1,0 +1,35 @@
+# Before integration, we need to define and know where is the batch from.
+
+1. Output Lee_2021
+2. Explore whether we need to split this study using python
+
+```{r include=FALSE}
+#load packages
+library(qs)
+library(dplyr)
+library(Seurat)
+library(SeuratData)
+library(patchwork)
+dyn.load("/apps/hdf5-serial/gnu/9.1/1.12.0/lib/libhdf5_hl.so.200")
+library(hdf5r)
+library("readxl")
+library("scCustomize")
+```
+Only lee_2021 has this problem, we need to perform whether splitting for only one study at a time.
+
+```{r include=FALSE}
+#-------Lee 2021
+health_merge_1115_qc_intersect<-qread("/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_merge_qc_1115_intersectgene_mapct.qs")#this can be used for integration
+Idents(health_merge_1115_qc_intersect)<-health_merge_1115_qc_intersect$Study_name
+lee_2021<-subset(health_merge_1115_qc_intersect,idents = c("Lee_2021_v2","Lee_2021_v3"))
+lee_2021$previous_celltype[which(is.na(lee_2021$previous_celltype))]<-"Unknown"
+lee_2021$harmonized_majorct[which(is.na(lee_2021$harmonized_majorct))]<-"Unknown"
+any(is.na(lee_2021$previous_celltype))
+
+write.csv(lee_2021@meta.data,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Cheng/health_intersectgene_qc_meta_1116.csv")
+library(Matrix)
+df<-t(lee_2021@assays$RNA@counts)
+writeMM(df, "/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Cheng/health_intersectgene_qc_count_1116.mtx")
+gene<-data.frame(gene=colnames(df))
+write.csv(gene,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Cheng/health_intersectgene_qc_gene_1116.csv")
+```
