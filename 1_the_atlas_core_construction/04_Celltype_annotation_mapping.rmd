@@ -166,3 +166,14 @@ ggsave(
   dpi = 150
 )
 ```
+
+# Output data for integration
+
+```{r include=FALSE}
+write.csv(health_merge_1117_qc_intersect@meta.data,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Merge_health/health_merge_qc_1117_intersectgene_mapct_sepleu_meta.csv")
+library(Matrix)
+df<-t(health_merge_1117_qc_intersect@assays$RNA@counts)
+writeMM(df, "/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Merge_health/health_intersectgene_qc_count_1117_sepleu.mtx")
+gene<-data.frame(gene=colnames(df))
+write.csv(gene,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Merge_health/health_intersectgene_qc_gene_1117_sepleu.csv")
+```
