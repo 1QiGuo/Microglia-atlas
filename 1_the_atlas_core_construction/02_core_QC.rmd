@@ -3,4 +3,5 @@
 The quality of cells was then assessed based on two metrics: 
 (1) The number of detected genes per cell; 
 (2) The proportion of mitochondrial gene counts per cell. 
-Specifically, cells with detected genes fewer than 200 and mitochondrial unique molecular identifier (UMI) count percentage larger than 10% were filtered out. The genes detected in more than 3 cells were retained. 
+Specifically, cells with detected genes fewer than 200 and mitochondrial unique molecular identifier (UMI) count percentage larger than 10% were filtered out. 
+The genes detected in more than 3 cells were retained. 
