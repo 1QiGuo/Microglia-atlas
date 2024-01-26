@@ -66,7 +66,7 @@ qsave(Popovich_2022_list,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_dat
 ##technical influences.
 Popovich_2022_list[[1]][["percent.mt"]] <-PercentageFeatureSet(Popovich_2022_list[[1]], pattern = "^mt-")
 VlnPlot(Popovich_2022_list[[1]], features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3,raster=FALSE)
-rownames(Popovich_2022_list[[1]])[grep(Popovich_2022_list[[1]](combined),pattern = "^mt-")]
+rownames(Popovich_2022_list[[1]])[grep(rownames(Popovich_2022_list[[1]]),pattern = "^mt-")]
 
 # conclusion: the sham vehicle has 14849 features across 1795 cells.
 # notes: check whether we used above to integrate
@@ -113,4 +113,28 @@ qsave(Lee_2021_list,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_obj
 ## QC: don't need to filter cells because it has been filtered and have metadata. More strict can be considered.
 
 # conclusion: we can directly use the first three samples as naive core.
+```
+
+
+## Levine_2022
+
+```{r include=FALSE}
+setwd("/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_object/Levine/Matson_Levine_2022")
+library(R.utils)
+#gunzip("GSE172167_SCI_all_nuclei.rds.gz", remove=FALSE)
+GSE172167<-readRDS(file = "./GSE172167_SCI_all_nuclei.rds")
+meta_GSE172167<-GSE172167@meta.data
+#revise metadata
+meta_GSE172167$previous_sampleid<-meta_GSE172167$orig.ident
+previous_sampleid<-unique(meta_GSE172167$orig.ident)
+sampleid<-c("SCI00401","SCI00402","SCI00403","SCI00404","SCI00405","SCI00406","SCI00407","SCI00408","SCI00409","SCI00410",
+            "SCI00411","SCI00412","SCI00413","SCI00414","SCI00415")
+  for(i in seq_along(sampleid)){
+    meta_GSE172167$orig.ident[which(meta_GSE172167$orig.ident==previous_sampleid[i])]<-sampleid[i]
+  }
+colnames(meta_GSE172167)[10:12]<-c("previous_subcelltype","previous_celltype","previous_midlevelcelltype")
+meta_GSE172167$study_name<-"Levine_2022"
+GSE172167@meta.data<-meta_GSE172167
+GSE172167<-SplitObject(GSE172167,split.by = "previous_sampleid")
+qsave(GSE172167,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_data_object/Levine/Matson_Levine_2022/Levine_2022.qs")
 ```
