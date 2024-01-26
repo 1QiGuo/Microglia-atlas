@@ -64,6 +64,9 @@ qsave(Popovich_2022_list,"/fs/ess/PCON0022/guoqi/Integration_spinal_cord/Raw_dat
 
 ## QC: Mito genes are not detected in the datasets and it seems mit genes might have been removed by original authors because of 
 ##technical influences.
+Popovich_2022_list[[1]][["percent.mt"]] <-PercentageFeatureSet(Popovich_2022_list[[1]], pattern = "^mt-")
+VlnPlot(Popovich_2022_list[[1]], features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3,raster=FALSE)
+rownames(Popovich_2022_list[[1]])[grep(Popovich_2022_list[[1]](combined),pattern = "^mt-")]
 
 # conclusion: the sham vehicle has 14849 features across 1795 cells.
 # notes: check whether we used above to integrate
