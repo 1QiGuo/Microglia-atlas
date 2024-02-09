@@ -174,38 +174,5 @@ Khoutorsky_2022_list<-qread("/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Khoutorsky
 health_list_1115<-c(health_list_1115,Khoutorsky_2022_list)
 qsave(health_list_1115,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_list_1115.qs")
 ```
-# Second round QC
 
-This is mainly for the quality control for studies that do not have provide cell type annotation (raw dataset).
-```{r}
-#QC before subset gene
-health_list_1115_qc<-list()
-#check mit
-for(i in 1:length(health_list_1115)){
-  print(grep ("^mt-", rownames(health_list_1115[[i]][["RNA"]]),value = T))
-}#some of them have, so we do QC separately
-for(i in 1:length(health_list_1115)){
-  Idents(health_list_1115[[i]])<-health_list_1115[[i]]$Species
-  health_list_1115[[i]][["percent.mt"]] <-PercentageFeatureSet(health_list_1115[[i]], pattern = "^mt.")
-  health_list_1115_qc[[i]]<-subset(  health_list_1115[[i]], subset = nFeature_RNA > 200 & percent.mt < 20)
-}
-```
 
-# Intersect genes
-
-In order to 
-```{r}
-#-------------genename
-gene_list_genesymbol<-list()
-for(i in 1:length(health_list_1115)){
-  gene_hugo<-rownames(health_list_1115[[i]])
-  gene_list_genesymbol[[i]]<-gene_hugo
-}
-intersect_genesymbol<-Reduce(intersect, gene_list_genesymbol)#10174
-
-health_list_1115_qc_intersect<-list()
-for(i in 1:length(health_list_1115_qc)){
-  #subset based on the intersect gene list
-  health_list_1115_qc_intersect[[i]]<-subset(health_list_1115_qc[[i]],features =intersect_genesymbol)
-}
-```
