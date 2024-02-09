@@ -1,4 +1,6 @@
-# Criteria
+# Second round QC
+
+This is mainly for the quality control for studies that did not provide cell type annotation (raw dataset).
 
 ## Cells
 The quality of cells was then assessed based on two metrics: 
