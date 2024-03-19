@@ -170,6 +170,7 @@ ggsave(
 # Output data for integration
 
 ```{r include=FALSE}
+qsave(health_merge_1115_qc_intersect,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/health_merge_qc_1117_intersectgene_mapct_separateleu.qs")#this can be used for integration
 write.csv(health_merge_1117_qc_intersect@meta.data,"/fs/ess/PAS1475/guoqi/sci_atlas/raw_data/Merge_health/health_merge_qc_1117_intersectgene_mapct_sepleu_meta.csv")
 library(Matrix)
 df<-t(health_merge_1117_qc_intersect@assays$RNA@counts)
