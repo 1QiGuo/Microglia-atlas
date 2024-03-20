@@ -50,3 +50,8 @@ It include the names of fastq files.
 Y11339_WenH_WT_V1G_1
 Y11340_WenH_KO_V1G_1
 ```
+
+# debug
+```
+tr -d '\r' < sample.txt > sample_unix.txt
+```
