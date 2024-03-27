@@ -16,7 +16,7 @@ while read NAME
 do
    sbatch --job-name=$NAME.run --output=./log/$NAME.out --export=NAME=$NAME cellranger_count.sh #need a shell file including speific cellranger function
    sleep 0.1s
-done < /fs/ess/PCON0022/Jianyingli/yard/sample.txt #need a txt file including sample name
+done < /fs/scratch/PCON0022/Megan/Qi_microglia/fastq/debug_qi_temp/sample_unix.txt #need a txt file including sample name
 ```
 
 # Construct a cellranger script
@@ -30,28 +30,31 @@ naming: cellranger_count.sh (can be changed but need to be consistent with the a
 #SBATCH --ntasks=16
 #SBATCH --mem=64GB
 
-wd=/fs/ess/PCON0022/Jianyingli/yard
+wd=/fs/scratch/PCON0022/Megan/Qi_microglia/fastq/debug_qi_temp
 CellRanger=/fs/ess/PCON0022/tools/cellranger-7.1.0/cellranger
-FastqFolder=$wd
+FastqFolder=/fs/scratch/PCON0022/Megan/Qi_microglia/fastq/raw_data
 Refer=/fs/project/PCON0022/tools/refdata-gex-mm10-2020-A
 
 #########################
 
 cd $wd
 echo $NAME
-${CellRanger} count --id=$NAME --transcriptome=${Refer} --fastqs=${FastqFolder}/$NAME --sample=$NAME --localcores=16 --localmem=64
+${CellRanger} count --id=$NAME --transcriptome=${Refer} --fastqs=${FastqFolder}/ --sample=$NAME --localcores=16 --localmem=64
 ```
 
 # A sample name file
+
 naming: sample.txt
-It include the names of fastq files.
+It includes the names of Fastq files.
 
 ```
 Y11339_WenH_WT_V1G_1
 Y11340_WenH_KO_V1G_1
 ```
 
-# debug
+remove "\r" if there is an error.
+
 ```
 tr -d '\r' < sample.txt > sample_unix.txt
 ```
+
